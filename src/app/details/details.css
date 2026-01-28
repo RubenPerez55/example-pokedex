@@ -1,0 +1,36 @@
+.poke-details {
+    margin: 0 auto;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 100%;
+    width: 350px;
+    text-align: center;
+}
+
+.type-badge {
+    display: inline-block;
+    background-color: #444;
+    color: #fff;
+    padding: 5px 12px;
+    border-radius: 20px;
+    margin: 2px 4px;
+    font-weight: bold;
+}
+
+.back-link {
+    margin-top: 20px;
+    text-decoration: none;
+    color: #007bff;
+    font-weight: bold;
+    font-size: 0.75rem;
+
+    &:hover {
+        text-decoration: underline;
+    }
+}

@@ -5,9 +5,9 @@ import { RouterOutlet } from '@angular/router';
   selector: 'poke-root',
   imports: [RouterOutlet],
   template: `
-    <h1>Hello, {{ title() }}</h1>
-
-    <router-outlet />
+    <main class="container">
+      <router-outlet />
+    </main>
   `,
   styleUrl: './app.css'
 })
