@@ -55,7 +55,7 @@ import { PokemonNotFound } from "./pokemon-not-found/pokemon-not-found/pokemon-n
           </div>
           <button class="back-link" routerLink="/">
             <i class="bi bi-house-fill"></i>
-            Return to Podédex
+            <p>Return to Podédex</p>
           </button>
         }
       }
