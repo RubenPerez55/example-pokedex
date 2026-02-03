@@ -21,7 +21,28 @@ export class cleanPokemonNamePipe implements PipeTransform {
     'wo-chien', 
     'chien-pao', 
     'ting-lu', 
-    'chi-yu'
+    'chi-yu', 
+    'iron-moth', 
+    'iron-jugulis', 
+    'iron-thorns', 
+    'iron-bundle',
+    'iron-valiant',
+    'iron-hands',
+    'iron-treads',
+    'iron-leaves',
+    'iron-boulder',
+    'iron-crown',
+    'great-tusk',
+    'scream-tail',
+    'brute-bonnet',
+    'flutter-mane',
+    'slither-wing',
+    'sandy-shocks',
+    'roaring-moon',
+    'iron-volt',
+    'walking-wake',
+    'gouging-fire',
+    'raging-bolt'
   ];
 
 
