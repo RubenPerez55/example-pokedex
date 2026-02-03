@@ -3,12 +3,11 @@ import { PokeResult } from '../../core/models/poke-result.model';
 import { NgOptimizedImage, TitleCasePipe } from '@angular/common';
 import { PokeImgPipe } from './poke-img-pipe';
 import { RouterLink } from '@angular/router';
-import { Pokemon } from '../../core/models/pokemon.model';
-import { PokeService } from '../../core/services/poke.service';
+import { cleanPokemonNamePipe } from '../../pipes/cleanPokemonName.pipe';
 
 @Component({
   selector: 'poke-card',
-  imports: [TitleCasePipe, PokeImgPipe, NgOptimizedImage, RouterLink],
+  imports: [TitleCasePipe, PokeImgPipe, NgOptimizedImage, RouterLink, cleanPokemonNamePipe],
   template: `
     <a class="poke-card" [routerLink]="['/pokemon', getIdFromUrl(pokeResult().url)]">
       <img
@@ -17,7 +16,7 @@ import { PokeService } from '../../core/services/poke.service';
         [ngSrc]="pokeResult().url | pokeImg" 
         [alt]="['/pokemon', getIdFromUrl(pokeResult().url)]"
       />
-      <p> {{ pokeResult().name | titlecase }} </p>
+      <p> {{ pokeResult().name | titlecase | cleanPokemonNamePipe }} </p>
     </a>
   `,
   styleUrl: './card.css',

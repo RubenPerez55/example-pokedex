@@ -1,12 +1,13 @@
 import { Component, inject, input } from '@angular/core';
 import { PokeService } from '../core/services/poke.service';
 import { NgOptimizedImage, TitleCasePipe } from '@angular/common';
+import { cleanPokemonNamePipe } from '../pipes/cleanPokemonName.pipe';
 import { Router, RouterLink } from "@angular/router";
 import { PokemonNotFound } from "./pokemon-not-found/pokemon-not-found/pokemon-not-found";
 
 @Component({
   selector: 'poke-details',
-  imports: [TitleCasePipe, NgOptimizedImage, RouterLink, PokemonNotFound],
+  imports: [TitleCasePipe, NgOptimizedImage, RouterLink, PokemonNotFound, cleanPokemonNamePipe],
   template: `
     @if (pokeResource.isLoading()) {
         <div class="spinner-container">
@@ -24,7 +25,7 @@ import { PokemonNotFound } from "./pokemon-not-found/pokemon-not-found/pokemon-n
               [ngSrc]="pokemon.sprites.front_default" 
               [alt]="pokemon.name"
             />
-            <h1 class="detail-title"> {{ pokemon.name | titlecase  }} </h1>
+            <h1 class="detail-title"> {{ pokemon.name | titlecase | cleanPokemonNamePipe }} </h1>
 
             <div>
               @for (type of pokemon.types; track type) {

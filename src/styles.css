@@ -6,18 +6,13 @@
 :root {
   /* variable de color global */
   --header-color: #04607b;
-  --primary-color: #fffcf7;
-  --secondary-color: rgb(236, 236, 236);
+  --primary-color: #f8f8f8;
+  --secondary-color: #fff;
   --font-color: #171717;
 }
 
 *{
   user-select: none;
-}
-
-@font-face {
-  font-family: 'PK';
-  src: url('/fonts/PokemonSolid.ttf') format('truetype');
 }
 
 body {

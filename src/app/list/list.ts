@@ -1,11 +1,10 @@
 import { Component, computed, effect, inject, signal } from '@angular/core';
 import { PokeService } from '../core/services/poke.service';
 import { Card } from './card/card';
-import { GenerationFilter } from "./filter/generation-filter/generation-filter";
 
 @Component({
   selector: 'poke-list',
-  imports: [Card, GenerationFilter],
+  imports: [Card],
   template: `
   <div class="main-title">
     <h1 class="title">The Ultimate Pokédex</h1>
