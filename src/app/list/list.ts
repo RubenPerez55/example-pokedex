@@ -16,7 +16,7 @@ import { Card } from './card/card';
     />
   </div>
   
-  <!-- Filter WIP -->
+  <!-- Filter Se continuara después cuando sepa TypeScript al 100 -->
   <!-- <poke-generation-filter /> -->
 
   @if (pokeListResource.isLoading()) {
