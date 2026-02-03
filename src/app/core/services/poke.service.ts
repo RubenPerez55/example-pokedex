@@ -1,19 +1,47 @@
-import { HttpErrorResponse, HttpHeaderResponse, httpResource, HttpResourceRef } from '@angular/common/http';
-import { Injectable, Signal } from '@angular/core';
+import { httpResource, HttpResourceRef } from '@angular/common/http';
+import { Injectable, signal, Signal } from '@angular/core';
 import { PokeList } from '../models/poke-list.model';
 import { Pokemon } from '../models/pokemon.model';
+import { PokeResult } from '../models/poke-result.model';
+import { Generation } from '../models/generation.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PokeService {
   readonly #pokeURL = 'https://pokeapi.co/api/v2';
+  allPokemon = signal<PokeResult[]>([]);
 
-  getPokeList(): HttpResourceRef< PokeList | undefined >{
-    return httpResource<PokeList>(() => `${this.#pokeURL}/pokemon?limit=151`);
+  async pokemonExists(id: number): Promise<boolean> {
+    try {
+      const res = await fetch(`${this.#pokeURL}/pokemon/${id}`);
+      return res.ok;
+    } catch {
+      return false;
+    }
   }
 
-  getPokemon(name: Signal<string>): HttpResourceRef<Pokemon | undefined> {
-    return httpResource<Pokemon>(() => `${this.#pokeURL}/pokemon/${name()}`)
+  getPokeList(limit: Signal<number>, offset: Signal<number>) {
+    return httpResource<PokeList>(() => 
+      `${this.#pokeURL}/pokemon?limit=${limit()}&offset=${offset()}`
+    );
+  }
+
+  getPokemon(id: Signal<string>): HttpResourceRef<Pokemon | undefined> {
+    return httpResource<Pokemon>(() => 
+      `${this.#pokeURL}/pokemon/${id()}`
+  );
+  }
+  
+  loadAllPokemon() {
+    return httpResource<PokeList>(() => 
+      `${this.#pokeURL}/pokemon?limit=1025`
+    );
+  }
+
+  getGeneration(gen: number) {
+    return httpResource<Generation>(() => 
+      `${this.#pokeURL}/generation/${gen}`
+    );
   }
 }

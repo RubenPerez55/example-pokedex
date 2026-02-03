@@ -8,12 +8,12 @@ import { RouterLink } from '@angular/router';
   selector: 'poke-card',
   imports: [TitleCasePipe, PokeImgPipe, NgOptimizedImage, RouterLink],
   template: `
-    <a class="poke-card" [routerLink]="pokeResult().name">
+    <a class="poke-card" [routerLink]="['/pokemon', getIdFromUrl(pokeResult().url)]">
       <img
         width="120"
         height="120"
         [ngSrc]="pokeResult().url | pokeImg" 
-        [alt]="pokeResult().name"
+        [alt]="['/pokemon', getIdFromUrl(pokeResult().url)]"
       />
       <p> {{ pokeResult().name | titlecase }} </p>
     </a>
@@ -22,4 +22,10 @@ import { RouterLink } from '@angular/router';
 })
 export class Card {
   readonly pokeResult = input.required<PokeResult>();
+
+  getIdFromUrl(url: string): string {
+    return url.split('/').filter(Boolean).pop()!;
+  } 
+
+
 }
