@@ -17,8 +17,8 @@ import { GenerationFilter } from "./filter/generation-filter/generation-filter";
     />
   </div>
   
-  <!-- Filter -->
-  <poke-generation-filter />
+  <!-- Filter WIP -->
+  <!-- <poke-generation-filter /> -->
 
   @if (pokeListResource.isLoading()) {
     <div class="spinner-container">
@@ -28,7 +28,14 @@ import { GenerationFilter } from "./filter/generation-filter/generation-filter";
     <p>Error: Pokémon not Found</p>
   } @else {
     @if (search() && filteredResults().length === 0) {
-      <p>Couldn't find any result</p>
+      <div class="error-msg">
+        <p>
+          Couldn't find any result...
+        </p>
+        <p>
+          <span>Try with another Pokémon name</span>
+        </p>
+      </div>
     } @else {
       <div class="poke-container">
         @for (pokeResult of filteredResults(); track pokeResult.name) {
@@ -38,7 +45,7 @@ import { GenerationFilter } from "./filter/generation-filter/generation-filter";
       </div>
     }
 
-    <div class="nav-buttons">
+    <div class="nav-buttons" id="nav-buttons">
       @if (offset() !== 0 ) {
         <button (click)="prevPage()" [disabled]="offset() === 0">
           <i class="bi bi-arrow-left"></i>
@@ -69,7 +76,6 @@ export class List {
     }
   });
 
-
   paginatedResults = computed(() => {
     const data = this.pokeListResource.value();
     return data?.results ?? [];
@@ -80,12 +86,17 @@ export class List {
     const query = this.search();
     const globalList = this.#pokeService.allPokemon();
     const pageList = this.paginatedResults();
+    const buttons = document.getElementById("nav-buttons");
 
-    if (!query) return pageList;
-
-    return globalList.filter(p =>
-      p.name.includes(query)
+    if (!query) {
+      buttons?.classList.remove('disabled');
+      return pageList;
+    } else {
+      buttons?.classList.add('disabled');
+      return globalList.filter(p =>
+        p.name.startsWith(query)
     );
+    }
   });
 
   pokeListResource = this.#pokeService.getPokeList(

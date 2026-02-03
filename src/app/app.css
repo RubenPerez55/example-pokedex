@@ -1,7 +1,21 @@
 .container {
-    max-width: 1500px;
+    max-width: 1700px;
     width: 100%;
     padding: 15px;
     box-sizing: border-box;
     margin: 0 auto;
+}
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+.app-layout {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.content {
+  flex: 1;   /* ESTO es lo que empuja el footer abajo */
 }

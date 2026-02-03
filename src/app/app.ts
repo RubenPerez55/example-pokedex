@@ -6,10 +6,12 @@ import { Footer } from "./assets/footer/footer";
   selector: 'poke-root',
   imports: [RouterOutlet, Footer],
   template: `
-    <main class="container">
+  <div class="app-layout">
+    <main class="container content">
       <router-outlet />
     </main>
     <poke-footer />
+  </div>
   `,
   styleUrl: './app.css'
 })
