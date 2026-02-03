@@ -34,6 +34,27 @@
     }
 }
 
+.toggle-section button {
+    margin-bottom: 20px;
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #0288d1;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+
+    &:hover {
+        background-color: #026fa4;
+    }
+}
+
+.toggle-section p {
+    font-size: 14px;
+    color: var(--primary-color);
+}
+
 @media (max-width: 700px) {
     .search-bar {
         display: flex;

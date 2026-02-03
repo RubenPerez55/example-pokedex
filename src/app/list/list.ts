@@ -8,6 +8,12 @@ import { Card } from './card/card';
   template: `
   <div class="main-title">
     <h1 class="title">The Ultimate Pokédex</h1>
+    <div class="toggle-section">
+      <button class="toggle-button" (click)="toggleLimit()">
+        Toggle limit
+      </button>
+      <p>{{ limit() === 20 ? 'Showing 20 Pokémon' : 'Showing all Pokémon' }}</p>
+    </div>
     <input 
       class="search-bar"
       type="text"
@@ -66,6 +72,10 @@ export class List {
   allPokemonResource = this.#pokeService.loadAllPokemon();
   limit = signal(20);
   offset = signal(0);
+
+  toggleLimit() {
+    this.limit.set(this.limit() === 20 ? 1025 : 20);
+  }
 
   cacheEffect = effect(() => {
     const data = this.allPokemonResource.value();
