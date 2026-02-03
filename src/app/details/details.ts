@@ -2,17 +2,18 @@ import { Component, inject, input } from '@angular/core';
 import { PokeService } from '../core/services/poke.service';
 import { NgOptimizedImage, TitleCasePipe } from '@angular/common';
 import { Router, RouterLink } from "@angular/router";
+import { PokemonNotFound } from "./pokemon-not-found/pokemon-not-found/pokemon-not-found";
 
 @Component({
   selector: 'poke-details',
-  imports: [TitleCasePipe, NgOptimizedImage, RouterLink],
+  imports: [TitleCasePipe, NgOptimizedImage, RouterLink, PokemonNotFound],
   template: `
     @if (pokeResource.isLoading()) {
         <div class="spinner-container">
           <div class="spinner"></div>
         </div>
       } @else if (pokeResource.error()) {
-        <p>Error al cargar el Pokémon</p>
+        <poke-pokemon-not-found />
       } @else {
         @if (pokeResource.value(); as pokemon) {
           <h1 class="detail-title">Pokémon #{{ pokemon.id }}</h1>

@@ -1,0 +1,18 @@
+:host {
+  display: block;
+}
+
+.footer {
+  position: relative;
+  bottom: 0;
+  width: 100%;
+  background-color: rgb(30, 30, 30);
+  color: #bababa;
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Quicksand';
+  font-size: 14px;
+  gap: 10px;
+}
