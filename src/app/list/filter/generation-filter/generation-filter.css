@@ -1,0 +1,17 @@
+:host {
+  display: block;
+}
+
+.gen-filter {
+  margin: 20px;
+}
+
+.gen-filter select {
+  max-width: 150px;
+  width: 100%;
+  background-color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 10px;
+  color: #888888;
+}
