@@ -1,19 +1,26 @@
 import { Component, computed, effect, inject, signal } from '@angular/core';
 import { PokeService } from '../core/services/poke.service';
 import { Card } from './card/card';
+import { Pagination } from "./filter/pagination/pagination/pagination";
+import { Megas } from "./mega/megas/megas";
 
 @Component({
   selector: 'poke-list',
-  imports: [Card],
+  imports: [Card, Pagination, Megas],
   template: `
   <div class="main-title">
     <h1 class="title">The Ultimate Pokédex</h1>
-    <div class="toggle-section">
+    <div class="nav-bar">
+      <button (click)="toggleMegas.set(!toggleMegas())"> 
+        <span> {{ toggleMegas() ? 'Show Pokémon' : 'Show Megas' }} </span>
+      </button>
       <button class="toggle-button" (click)="toggleLimit()">
         Toggle limit
       </button>
-      <p>{{ limit() === 20 ? 'Showing 20 Pokémon' : 'Showing all Pokémon' }}</p>
     </div>
+    <p>{{ limit() === 20 ? 'Showing 20 Pokémon' : 'Showing all Pokémon' }}</p>
+
+    <!-- Search Bar -->
     <input 
       class="search-bar"
       type="text"
@@ -21,18 +28,12 @@ import { Card } from './card/card';
       (input)="search.set($event.target.value.toLowerCase())"
     />
   </div>
-  
-  <!-- Filter Se continuara después cuando sepa TypeScript al 100 -->
-  <!-- <poke-generation-filter /> -->
 
   @if (pokeListResource.isLoading()) {
     <div class="spinner-container">
       <div class="spinner"></div>
     </div>
-  } @else if (pokeListResource.error()) {
-    <p>Error: Pokémon not Found</p>
-  } @else {
-    @if (search() && filteredResults().length === 0) {
+  } @else if ( pokeListResource.error() || search() && filteredResults().length === 0) {
       <div class="error-msg">
         <p>
           Couldn't find any result...
@@ -42,69 +43,88 @@ import { Card } from './card/card';
         </p>
       </div>
     } @else {
-      <div class="poke-container">
-        @for (pokeResult of filteredResults(); track pokeResult.name) {
-          <!-- Card of each Pokémon -->
-          <poke-card [pokeResult]="pokeResult" />
-        }
-      </div>
-    }
-
-    <div class="nav-buttons" id="nav-buttons">
-      @if (offset() !== 0 ) {
-        <button (click)="prevPage()" [disabled]="offset() === 0">
-          <i class="bi bi-arrow-left"></i>
-          Previous
-        </button>
+      @if (toggleMegas()) {
+        <poke-megas></poke-megas>
+      } @else {
+        <div class="poke-container">
+          @for (pokeResult of filteredResults(); track pokeResult.name) {
+            <!-- Card of each Pokémon -->
+            <poke-card [pokeResult]="pokeResult" />
+          }
+        </div>
       }
-      <button (click)="nextPage()">
-        Next 
-        <i class="bi bi-arrow-right"></i>
+    }
+    @if ( limit() === 20 ) {<poke-pagination /> } 
+
+    @if ( limit() !== 20 ) {
+      <button class="go-up-button" (click)="goTop()">
+        Return to Top
+        <i class="bi bi-arrow-up"></i>
       </button>
-    </div>
-  }
+    }
   `,
   styleUrl: './list.css',
 })
-export class List {
-  readonly #pokeService = inject(PokeService);
-  search = signal('');
-  allPokemonResource = this.#pokeService.loadAllPokemon();
-  limit = signal(20);
-  offset = signal(0);
 
+
+export class List {
+  // imported Service
+  readonly #pokeService = inject(PokeService);
+
+  // Signals
+  search = signal('');
+  limit = this.#pokeService.limit;
+  offset = this.#pokeService.offset;
+  toggleMegas = signal(false);
+
+  // Constants for Toggle Limit
+  previousOffset = signal(0);
+  MAX_POKEMON = 1025;
+  PAGE_SIZE = 20;
+  MAX_OFFSET = this.MAX_POKEMON - this.PAGE_SIZE;
+
+
+  // Toggle Button on Main Title
   toggleLimit() {
-    this.limit.set(this.limit() === 20 ? 1025 : 20);
+    const isPaginated = this.limit() === 20; 
+    if (isPaginated) {
+      this.previousOffset.set(this.offset());
+      this.limit.set(1025);
+      this.offset.set(0);
+
+    } else {
+      this.limit.set(20);
+
+      const restored = this.previousOffset();
+      this.offset.set(restored > this.MAX_OFFSET ? this.MAX_OFFSET : restored);
+    }
   }
 
-  cacheEffect = effect(() => {
-    const data = this.allPokemonResource.value();
-    if (data?.results?.length) {
-      this.#pokeService.allPokemon.set(data.results);
-      console.log('CACHE LOADED:', data.results.length);
-    }
-  });
-
+  // Functions / Signals related to Pokémon List
   paginatedResults = computed(() => {
     const data = this.pokeListResource.value();
     return data?.results ?? [];
   });
 
-  // resultados al usar el filtro de búsqueda
   filteredResults = computed(() => {
     const query = this.search();
     const globalList = this.#pokeService.allPokemon();
     const pageList = this.paginatedResults();
-    const buttons = document.getElementById("nav-buttons");
 
     if (!query) {
-      buttons?.classList.remove('disabled');
       return pageList;
     } else {
-      buttons?.classList.add('disabled');
       return globalList.filter(p =>
         p.name.startsWith(query)
     );
+    }
+  });
+
+  cacheEffect = effect(() => {
+    const data = this.#pokeService.allPokemon();
+    if (data?.length) {
+      this.#pokeService.allPokemon.set(data);
+      console.log('CACHE LOADED:', data.length);
     }
   });
 
@@ -113,13 +133,8 @@ export class List {
     this.offset
   );
 
-  nextPage() {
-    this.offset.set(this.offset() + this.limit());
-  }
-
-  prevPage() {
-    if ( this.offset() > 0 ) {
-      this.offset.set(this.offset() - this.limit());
-    }
+  // Go Up Button
+  goTop() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 }

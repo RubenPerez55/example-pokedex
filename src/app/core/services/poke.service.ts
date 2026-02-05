@@ -1,9 +1,10 @@
-import { httpResource, HttpResourceRef } from '@angular/common/http';
-import { Injectable, signal, Signal } from '@angular/core';
+import { HttpClient, httpResource, HttpResourceRef } from '@angular/common/http';
+import { effect, Injectable, signal, Signal } from '@angular/core';
 import { PokeList } from '../models/poke-list.model';
 import { Pokemon } from '../models/pokemon.model';
 import { PokeResult } from '../models/poke-result.model';
 import { Generation } from '../models/generation.model';
+import { PokemonSpecies } from '../models/pokemon-species.model';
 
 @Injectable({
   providedIn: 'root',
@@ -11,6 +12,20 @@ import { Generation } from '../models/generation.model';
 export class PokeService {
   readonly #pokeURL = 'https://pokeapi.co/api/v2';
   allPokemon = signal<PokeResult[]>([]);
+  allPokemonResource = this.loadAllPokemon();
+
+  // Signals for list and pagination
+  offset = signal(0);
+  limit = signal(20)
+
+  constructor(private http: HttpClient) {
+    effect(() => {
+      const data = this.allPokemonResource.value();
+      if (data?.results?.length) {
+        this.allPokemon.set(data.results);
+      }
+    });
+  }
 
   async pokemonExists(id: number): Promise<boolean> {
     try {
@@ -44,4 +59,18 @@ export class PokeService {
       `${this.#pokeURL}/generation/${gen}`
     );
   }
+
+  getSpeciesRaw(id: number) {
+    return this.http.get<PokemonSpecies>(
+      `${this.#pokeURL}/pokemon-species/${id}`
+    );
+  }
+
+  getAllPokemonRaw(limit: number = 2000) {
+  return this.http.get<any>(
+    `${this.#pokeURL}/pokemon?limit=${limit}`
+  );
+}
+
+
 }

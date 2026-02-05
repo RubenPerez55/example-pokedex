@@ -45,13 +45,55 @@ export class cleanPokemonNamePipe implements PipeTransform {
     'raging-bolt'
   ];
 
+  toTransform = [
+    'Deoxys-normal',
+    'Wormadam-plant',
+    'Giratina-altered',
+    'Shaymin-land',
+    'Basculin-red-striped',
+    'Darmanitan-standard',
+    'Tornadus-incarnate',
+    'Thundurus-incarnate',
+    'Landorus-incarnate',
+    'Kyurem-normal',
+    'Meloetta-aria',
+    'keldeo-ordinary',
+    'aegislash-shield',
+    'pumpkaboo-average',
+    'gourgeist-average',
+    'oricorio-baile',
+    'lycanroc-midday',
+    'wishiwashi-solo',
+    'minior-red-meteor',
+    'mimikyu-disguised',
+    'toxtricity-amped',
+    'indeedee-male',
+    'morpeko-full-belly',
+    'urshifu-single-strike',
+    'basculegion-male',
+    'enamorus-incarnate',
+    'oinkologne-male',
+    'maushold-family-of-four',
+    'squawkabilly-green-plumage',
+    'dudunsparce-two-segment',
+  ];
+
 
   transform(value: string | null | undefined): string {
     if (!value) return '';
+
+    if ( value.endsWith('mega') || value.endsWith('x') || value.endsWith('y') ) {
+      return value;
+    }
+
+    if ( value.endsWith('gmax') ) {
+      return value;
+    }
+
     if (this.exceptions.includes(value.toLowerCase())) {
       return value;
     }
-    return value.split('-')[0];
+    // return value.split('-')[0];
+    return value;
   }
-
 }

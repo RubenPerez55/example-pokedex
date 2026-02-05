@@ -1,7 +1,7 @@
 import { Component, inject, input } from '@angular/core';
 import { PokeService } from '../core/services/poke.service';
 import { NgOptimizedImage, TitleCasePipe } from '@angular/common';
-import { cleanPokemonNamePipe } from '../pipes/cleanPokemonName.pipe';
+import { cleanPokemonNamePipe } from '../core/pipes/cleanPokemonName.pipe';
 import { Router, RouterLink } from "@angular/router";
 import { PokemonNotFound } from "./pokemon-not-found/pokemon-not-found/pokemon-not-found";
 
@@ -24,6 +24,7 @@ import { PokemonNotFound } from "./pokemon-not-found/pokemon-not-found/pokemon-n
               height="200"
               [ngSrc]="pokemon.sprites.front_default" 
               [alt]="pokemon.name"
+              priority
             />
             <h1 class="detail-title"> {{ pokemon.name | titlecase | cleanPokemonNamePipe }} </h1>
 

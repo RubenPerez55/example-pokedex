@@ -3,7 +3,7 @@ import { PokeResult } from '../../core/models/poke-result.model';
 import { NgOptimizedImage, TitleCasePipe } from '@angular/common';
 import { PokeImgPipe } from './poke-img-pipe';
 import { RouterLink } from '@angular/router';
-import { cleanPokemonNamePipe } from '../../pipes/cleanPokemonName.pipe';
+import { cleanPokemonNamePipe } from '../../core/pipes/cleanPokemonName.pipe';
 
 @Component({
   selector: 'poke-card',
@@ -22,10 +22,8 @@ import { cleanPokemonNamePipe } from '../../pipes/cleanPokemonName.pipe';
   styleUrl: './card.css',
 })
 export class Card {
-    readonly pokeResult = input.required<PokeResult>();
+  readonly pokeResult = input.required<PokeResult>();
   
-
-
   getIdFromUrl(url: string): string {
     return url.split('/').filter(Boolean).pop()!;
   } 

@@ -6,6 +6,7 @@
 :root {
   /* variable de color global */
   --header-color: #04607b;
+  --dark-header-color: #023b4c;
   --primary-color: #f8f8f8;
   --secondary-color: #fff;
   --font-color: #171717;
@@ -51,6 +52,13 @@ body {
   to {
     transform: rotate(360deg);
   }
+}
+
+.poke-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
 }
 
 /* Navigation buttons  */
