@@ -2,6 +2,9 @@
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.1.0.
 
+Link to the proyect:
+https://example-rapz-pokedex.netlify.app/
+
 ## Development server
 
 To start a local development server, run:
